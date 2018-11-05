@@ -1,2 +1,6 @@
+# Django UI Ignores
 Book_Recommender_UI/Book_Recommender_UI/__pycache__
 Book_Recommender_UI/Book_Recommender_UI/config.py
+
+# Model Ignores
+Model/.ipynb_checkpoints
