@@ -1,8 +1,6 @@
 # Django UI Ignores
 __pycache__/
 Book_Recommender_UI/Book_Recommender_UI/config.py
-Book_Recommender_UI/media/profile_pics/*.jpg
-Book_Recommender_UI/media/*.jpg
 
 # Model Ignores
 Model/.ipynb_checkpoints
