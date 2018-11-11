@@ -76,9 +76,9 @@
           <h3>Guide</h3>
           <p class='text-muted'> Additional Navigation & Your Content
             <ul class="list-group">
-              <li class="list-group-item list-group-item-light">All Books</li>
-              <li class="list-group-item list-group-item-light">Your Reviews</li>
-              <li class="list-group-item list-group-item-light">Your Recommendations</li>
+              <li class="list-group-item list-group-item-light"><a href="{% url 'books' %}"><i class="fas fa-book-open"></i>All Books</a></li>
+              <li class="list-group-item list-group-item-light"><a href="{% url 'user-reviews' %}"><i class="fas fa-star"></i>Your Reviews</a></li>
+              <li class="list-group-item list-group-item-light"><a href="{% url 'user-recommendations' %}"><i class="fas fa-thumbs-up"></i>Your Recommendations</a></li>
             </ul>
           </p>
         </div>
