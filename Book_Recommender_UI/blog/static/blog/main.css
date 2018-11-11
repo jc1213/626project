@@ -82,3 +82,8 @@ a.article-title:hover {
 .account-heading {
   font-size: 2.5rem;
 }
+
+.fas {
+  margin-left: 5px;
+  margin-right: 10px;
+}
