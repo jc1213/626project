@@ -1,17 +1,75 @@
 import pandas as pd
+import numpy as np
 from math import *
 
+"""
+books = pd.read_csv('BX-Books.csv', sep=';', error_bad_lines=False, encoding="cp1252")
+books.columns = ['ISBN', 'bookTitle', 'bookAuthor', 'yearOfPublication', 'publisher', 'imageUrlS', 'imageUrlM', 'imageUrlL']
+users = pd.read_csv('BX-Users.csv', sep=';', error_bad_lines=False, encoding="cp1252")
+users.columns = ['userID', 'Location', 'Age']
+ratings = pd.read_csv('BX-Book-ratings.csv', sep=';', error_bad_lines=False, encoding="cp1252")
+ratings.columns = ['userID', 'ISBN', 'bookRating']
 
-books = pd.read_csv("BX-Books.csv", encoding='cp1252', sep=';', error_bad_lines=False)
-# ISBN	bookTitle	bookAuthor	yearOfPublication	publisher
-ratings = pd.read_csv("BX-Book-Ratings.csv", encoding='cp1252', sep=';', error_bad_lines=False)
-# userID	ISBN	bookRating
+# Data cleaning
+
+# We do not need image urls for this project, so delete those
+books.drop(['imageUrlS', 'imageUrlM', 'imageUrlL'],axis=1,inplace=True)
+
+# Make sure texts are fully displayed
+pd.set_option('display.max_colwidth', -1)
+
+# Replace 'nAn' with 'unknown'
+books.loc[(books.ISBN == '9627982032'),'bookAuthor'] = 'unknown'
+books.loc[(books.ISBN == '193169656X'),'publisher'] = 'unknown'
+books.loc[(books.ISBN == '1931696993'),'publisher'] = 'unknown'
+
+# Fix Values that are placed in the wrong columns
+books.loc[books.ISBN == '078946697X','bookTitle'] = "DK Readers: Creating the X-Men, How It All Began (Level 4: Proficient Readers)"
+books.loc[books.ISBN == '078946697X','bookAuthor'] = "Michael Teitelbaum"
+books.loc[books.ISBN == '078946697X','yearOfPublication'] = 2000
+books.loc[books.ISBN == '078946697X','publisher'] = "DK Publishing Inc"
+
+books.loc[books.ISBN == '0789466953','bookTitle'] = "DK Readers: Creating the X-Men, How Comic Books Come to Life (Level 4: Proficient Readers)"
+books.loc[books.ISBN == '0789466953','bookAuthor'] = "James Buckley"
+books.loc[books.ISBN == '0789466953','yearOfPublication'] = 2000
+books.loc[books.ISBN == '0789466953','publisher'] = "DK Publishing Inc"
+
+books.loc[books.ISBN == '2070426769','bookTitle'] = "Peuple du ciel, suivi de 'Les Bergers"
+books.loc[books.ISBN == '2070426769','bookAuthor'] = "Jean-Marie Gustave Le ClÃ?Â©zio"
+books.loc[books.ISBN == '2070426769','yearOfPublication'] = 2003
+books.loc[books.ISBN == '2070426769','publisher'] = "Gallimard"
+
+# Redefine data type for yearOfPublication
+books.yearOfPublication = pd.to_numeric(books.yearOfPublication, errors='coerce')
+
+# Dump years that are greater than 2004(dataset publication year) or equal to 0
+books.loc[(books.yearOfPublication > 2004) | (books.yearOfPublication == 0),'yearOfPublication'] = np.NAN
+# Replace these years with the average
+books.yearOfPublication.fillna(round(books.yearOfPublication.mean()), inplace=True)
+# Redefine yearOfPublication as int32
+books.yearOfPublication = books.yearOfPublication.astype(np.int32)
+
+# User whose age is greater than 90 or less than 5 are not considered
+users.loc[(users.Age > 90) | (users.Age < 5), 'Age'] = np.nan
+# Replace these ages with the average
+users.Age = users.Age.fillna(users.Age.mean())
+# Redefine data type as int32
+users.Age = users.Age.astype(np.int32)
+# To maintain consistency/validity for three datasets, we have to check if there are any new data in [ratings] dataset
+ratings_bANDr = ratings[ratings.ISBN.isin(books.ISBN)]
+ratings_uANDr = ratings[ratings.userID.isin(users.userID)]
+# We will use [books] & [ratings] cross dataset
+ratings = ratings_bANDr
+books.to_csv("Books.csv", sep='\t')
+users.to_csv("Users.csv", sep='\t')
+ratings.to_csv("Ratings.csv", sep='\t')
+
 data = pd.merge(books, ratings, on='ISBN')
-# print(data)
-data[['User-ID', 'Book-Rating', 'ISBN', 'Book-Title']].sort_values('User-ID').to_csv('data.csv', index=False)
+# print(data) with sorting id
+data[['userID', 'bookRating', 'ISBN', 'bookTitle']].sort_values('userID').to_csv('data.csv', index=False)
 print(data.head())
 print(data.shape)
-
+"""
 
 file = open("data.csv", 'r', encoding='cp1252')
 data = {}  # contains the book and rating from every user
@@ -44,7 +102,7 @@ def top10_simliar(userID):
     res = []
     for userid in data.keys():
         # Exclude similarity calculation with yourself
-        if not userid == userID:
+        if not userid == userID and not userid == "userID":
             simliar = Euclidean(userID, userid)
             res.append((userid, simliar))
     res.sort(key=lambda val: val[1])
