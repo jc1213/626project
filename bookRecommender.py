@@ -1,7 +1,7 @@
 import pandas as pd
 from math import *
 
-'''
+
 books = pd.read_csv("BX-Books.csv", encoding='cp1252', sep=';', error_bad_lines=False)
 # ISBN	bookTitle	bookAuthor	yearOfPublication	publisher
 ratings = pd.read_csv("BX-Book-Ratings.csv", encoding='cp1252', sep=';', error_bad_lines=False)
@@ -9,7 +9,7 @@ ratings = pd.read_csv("BX-Book-Ratings.csv", encoding='cp1252', sep=';', error_b
 data = pd.merge(books, ratings, on='ISBN')
 # print(data)
 data[['User-ID', 'Book-Rating', 'ISBN', 'Book-Title']].sort_values('User-ID').to_csv('data.csv', index=False)
-'''
+
 
 file = open("data.csv", 'r', encoding='cp1252')
 data = {}  # contains the book and rating from every user
