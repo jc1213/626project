@@ -1,3 +1,12 @@
+"""
+CSCI626 Information Retrieval
+By Xiaohui Chen, Rajendra Bhagroo and Shelly Gupta
+Simple version of book recommender system
+Using Collaborative Filtering by Euclidean Distance
+"""
+
+
+
 import pandas as pd
 import numpy as np
 from math import *
@@ -97,7 +106,7 @@ def Euclidean(user1, user2):
     return 1 / (1 + sqrt(distance))  # The greater the return value, the greater the similarity
 
 
-# Calculates the similarity
+# Calculate the similarity between two users
 def top10_simliar(userID):
     res = []
     for userid in data.keys():
@@ -124,7 +133,7 @@ def recommend(user):
     return recommendations[:3]
 
 
-
+# Simple terminal I/O
 menuOption = '0'
 while menuOption != '3':
     print("---------------------Book Recommender System---------------------")
