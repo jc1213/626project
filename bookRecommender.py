@@ -91,10 +91,10 @@ def Euclidean(user1, user2):
     # Find books that both users have reviewed and calculate the Euclidean distance
     for key in user1_data.keys():
         if key in user2_data.keys():
-            # Note that the greater the distance, the more similar the two are
+            # Note that the smaller the distance, the more similar the two are
             distance += pow(float(user1_data[key]) - float(user2_data[key]), 2)
 
-    return 1 / (1 + sqrt(distance))  # The smaller the return value, the greater the similarity
+    return 1 / (1 + sqrt(distance))  # The greater the return value, the greater the similarity
 
 
 # Calculates the similarity
@@ -120,7 +120,7 @@ def recommend(user):
         if item not in data[user].keys():
             recommendations.append((item, items[item]))
     recommendations.sort(key=lambda val: val[1], reverse=True)  # Sort by rating
-    # Returns the top 3 movies
+    # Returns the top 3 books
     return recommendations[:3]
 
 
