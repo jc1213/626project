@@ -9,6 +9,8 @@ ratings = pd.read_csv("BX-Book-Ratings.csv", encoding='cp1252', sep=';', error_b
 data = pd.merge(books, ratings, on='ISBN')
 # print(data)
 data[['User-ID', 'Book-Rating', 'ISBN', 'Book-Title']].sort_values('User-ID').to_csv('data.csv', index=False)
+print(data.head())
+print(data.shape)
 
 
 file = open("data.csv", 'r', encoding='cp1252')
@@ -46,7 +48,7 @@ def top10_simliar(userID):
             simliar = Euclidean(userID, userid)
             res.append((userid, simliar))
     res.sort(key=lambda val: val[1])
-    return res[:4]
+    return res[:10]
 
 
 def recommend(user):
@@ -64,8 +66,44 @@ def recommend(user):
     return recommendations[:3]
 
 
-# RES = top10_simliar('8')
-# print(RES)
-Recommendations = recommend('16')
-print(Recommendations)
+
+menuOption = '0'
+while menuOption != '3':
+    print("---------------------Book Recommender System---------------------")
+    print("Menu")
+    print("1. See the top 10 similar users")
+    print("2. Check top three recommendation books")
+    print("3. Exit")
+    menuOption = input("Please choose from menu options.\n")
+    type(menuOption)
+    if menuOption == '1':
+        while True:
+            try:
+                userId = input("Please enter the userID.\n")
+                RES = top10_simliar(userId)
+            except:
+                print("User does not exist. Please try again.")
+                continue
+            else:
+                break
+        print("User ID" + "         " + "Distance")
+        for similarUser in RES:
+            print(similarUser)
+    elif menuOption == '2':
+        while True:
+            try:
+                userId = input("Please enter the userID.\n")
+                Recommendations = recommend(userId)
+            except:
+                print("User does not exist. Please try again.")
+                continue
+            else:
+                break
+        print("Book Title" + "         " + "Rating")
+        for book in Recommendations:
+            print(book)
+    elif menuOption == '3':
+        exit()
+    else:
+        print("Option does not exist. Please choose again.")
 
