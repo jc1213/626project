@@ -1,21 +1,21 @@
 from django.urls import path
 from .views import (
-    PostListView,
-    PostDetailView,
-    PostCreateView,
-    PostUpdateView,
-    PostDeleteView,
-    UserPostListView
+    BookListView,
+    BookDetailView,
+    BookCreateView,
+    BookUpdateView,
+    BookDeleteView,
+    UserBookListView
 )
 from . import views
 
 urlpatterns = [
-    path('', PostListView.as_view(), name='blog-home'),
-    path('user/<str:username>', UserPostListView.as_view(), name='user-posts'),
-    path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
-    path('post/new/', PostCreateView.as_view(), name='post-create'),
-    path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
-    path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
+    path('', BookListView.as_view(), name='blog-home'),
+    path('user/<str:username>', UserBookListView.as_view(), name='user-books'),
+    path('book/<int:pk>/', BookDetailView.as_view(), name='book-detail'),
+    path('book/new/', BookCreateView.as_view(), name='book-create'),
+    path('book/<int:pk>/update/', BookUpdateView.as_view(), name='book-update'),
+    path('book/<int:pk>/delete/', BookDeleteView.as_view(), name='book-delete'),
     path('about/', views.about, name='blog-about'),
     path('books/', views.books, name='books'),
     path('user/reviews/', views.reviews, name='user-reviews'),

@@ -1,4 +1,16 @@
 {% extends "blog/base.html" %}
 {% block content %}
+    {% for book in books %}
     <h1>All Books</h1>
+        <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{ book.author.profile.image.url }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <small class="text-muted">{{ book.date_posted|date:"F d, Y" }}</small>
+            </div>
+            <h2><a class="article-title"  href="{% url 'book-detail' book.id %}">{{ book.Title }}</a></h2>
+            
+          </div>
+        </article>
+        {% endfor %}
 {% endblock content %}

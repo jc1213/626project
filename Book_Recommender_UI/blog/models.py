@@ -4,14 +4,17 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 
-class Post(models.Model):
-    title = models.CharField(max_length=100)
-    content = models.TextField()
+class Book(models.Model):
+    ISBN = models.IntegerField()
+    Title = models.CharField(max_length=100)
+    Author = models.CharField(max_length=100)
+    YearofPublication = models.IntegerField()
+    Publisher = models.CharField(max_length=100)
     date_posted = models.DateTimeField(default=timezone.now)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.IntegerField(default='0')
 
     def __str__(self):
-        return self.title
+        return self.Title
 
     def get_absolute_url(self):
-        return reverse('post-detail', kwargs={'pk': self.pk})
+        return reverse('book-detail', kwargs={'pk': self.pk})

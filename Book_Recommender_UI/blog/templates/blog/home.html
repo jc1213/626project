@@ -1,15 +1,16 @@
 {% extends "blog/base.html" %}
 {% block content %}
-    {% for post in posts %}
+    {% for book in books %}
         <article class="media content-section">
-          <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
+          <img class="rounded-circle article-img" src="{{ book.author.profile.image.url }}">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
-              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+              <a class="mr-2" href="{% url 'user-books' book.Author %}">{{ book.Author }}</a>
+              <small class="text-muted">{{ book.date_posted|date:"F d, Y" }}</small>
             </div>
-            <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content }}</p>
+            <h2><a class="article-title"  href="{% url 'book-detail' book.id %}">{{ book.Title }}</a></h2>
+            <p class="article-content">Year of Publication:{{ book.YearofPublication }}</p>
+            <p class="article-content">Rate:{{ book.rating}}</p>
           </div>
         </article>
     {% endfor %}

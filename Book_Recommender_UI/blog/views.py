@@ -8,70 +8,66 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import Post
+from .models import Book
 
 
 def home(request):
     context = {
-        'posts': Post.objects.all()
+        'books': Book.objects.all()
     }
     return render(request, 'blog/home.html', context)
 
 
-class PostListView(ListView):
-    model = Post
+class BookListView(ListView):
+    model = Book
     template_name = 'blog/home.html'  # <app>/<model>_<viewtype>.html
-    context_object_name = 'posts'
-    ordering = ['-date_posted']
+    context_object_name = 'books'
+    ordering = ['YearofPublication']
     paginate_by = 5
 
 
-class UserPostListView(ListView):
-    model = Post
-    template_name = 'blog/user_posts.html'  # <app>/<model>_<viewtype>.html
-    context_object_name = 'posts'
+class UserBookListView(ListView):
+    model = Book
+    template_name = 'blog/user_books.html'  # <app>/<model>_<viewtype>.html
+    context_object_name = 'books'
     paginate_by = 5
 
-    def get_queryset(self):
-        user = get_object_or_404(User, username=self.kwargs.get('username'))
-        return Post.objects.filter(author=user).order_by('-date_posted')
+
+class BookDetailView(DetailView):
+    model = Book
 
 
-class PostDetailView(DetailView):
-    model = Post
-
-
-class PostCreateView(LoginRequiredMixin, CreateView):
-    model = Post
-    fields = ['title', 'content']
+class BookCreateView(LoginRequiredMixin, CreateView):
+    model = Book
+    fields = ['ISBN', 'Title', 'Author', 'YearofPublication', 'Publisher']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
 
-class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Post
-    fields = ['title', 'content']
+class BookUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Book
+    fields = ['ISBN', 'Title', 'Author', 'YearofPublication', 'Publisher']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
     def test_func(self):
-        post = self.get_object()
-        if self.request.user == post.author:
+        book = self.get_object()
+        if self.request.user == book.Author:
             return True
         return False
 
 
-class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = Post
+class BookDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Book
     success_url = '/'
 
     def test_func(self):
-        post = self.get_object()
-        if self.request.user == post.author:
+        book = self.get_object()
+        if self.request.user == book.Author:
             return True
         return False
 
